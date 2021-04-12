@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import model.Indexer;
+
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -18,11 +21,12 @@ public class Main extends Application {
         primaryStage.setTitle("Covid19 Search Engine");
         primaryStage.setScene(new Scene(root, 1000, 800));
         primaryStage.show();
+        Indexer ind = new Indexer("articles");
 
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         launch(args);
     }
 }
