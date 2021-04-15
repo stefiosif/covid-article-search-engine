@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Indexer;
+import model.LuceneConstants;
+
 import java.io.IOException;
 
 public class Main extends Application {
@@ -13,11 +15,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException{
 
-        Parent root = FXMLLoader.load(getClass().getResource("app-gui.fxml"));
-        primaryStage.setTitle("Covid19 Search Engine");
+        Parent root = FXMLLoader.load(getClass().getResource("landing-page.fxml"));
+        primaryStage.setTitle(LuceneConstants.APP_NAME);
         primaryStage.setScene(new Scene(root, 1000, 800));
         primaryStage.show();
-        Indexer ind = new Indexer("tmp/index");
+        Indexer ind = new Indexer(LuceneConstants.INDEX_PATH);
 
     }
 

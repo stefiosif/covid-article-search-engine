@@ -1,4 +1,10 @@
 # Project exclude paths
+
+# Intellij dependencies/binaries
 /out/
 /.idea/
 *.iml
+
+# I/O
+/resources
+/tmp/

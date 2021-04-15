@@ -2,6 +2,7 @@ package model;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
@@ -27,7 +28,7 @@ public class Indexer {
     IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
     indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
 
-    createIndex("articles");
+    createIndex(LuceneConstants.ARTICLES_PATH);
 
     indexWriter.close();
   }
@@ -37,35 +38,38 @@ public class Indexer {
     File[] files = new File(dataDirPath).listFiles();
 
     for (File file : files)
-      indexWriter.addDocument(getDocument(file));
+      indexWriter.addDocument(createDocument(file));
   }
 
-  private Document getDocument(File file) throws IOException {
+  private Document createDocument(File file) throws IOException {
 
     Document document = new Document();
     BufferedReader br = new BufferedReader(new FileReader(file));
-    ArrayList<TextField> textFields = new ArrayList<>();
+    ArrayList<TextField> fields = new ArrayList<>();
 
-    textFields.add(new TextField(LuceneConstants.ARTICLE_AUTHOR,
-        br.readLine(), TextField.Store.YES));
-    textFields.add(new TextField(LuceneConstants.ARTICLE_DATE,
-        br.readLine(), TextField.Store.YES));
-    textFields.add(new TextField(LuceneConstants.ARTICLE_FOCUS,
-        br.readLine(), TextField.Store.YES));
-    textFields.add(new TextField(LuceneConstants.ARTICLE_TITLE,
-        br.readLine(), TextField.Store.YES));
-    textFields.add(new TextField(LuceneConstants.ARTICLE_CONTENTS,
-        br.lines().collect(Collectors.joining()), TextField.Store.NO));
+    fields.add(new TextField(LuceneConstants.ARTICLE_AUTHOR,
+        br.readLine(), Field.Store.YES));
+    fields.add(new TextField(LuceneConstants.ARTICLE_DATE,
+        br.readLine(), Field.Store.YES));
+    fields.add(new TextField(LuceneConstants.ARTICLE_FOCUS,
+        br.readLine(), Field.Store.YES));
+    fields.add(new TextField(LuceneConstants.ARTICLE_TITLE,
+        br.readLine(), Field.Store.YES));
+    fields.add(new TextField(LuceneConstants.ARTICLE_CONTENTS,
+        br.lines().collect(Collectors.joining()), Field.Store.NO));
 
-    textFields.add(new TextField(LuceneConstants.FILE_NAME,
-        file.getName(), TextField.Store.YES));
-    textFields.add(new TextField(LuceneConstants.FILE_PATH,
-        file.getCanonicalPath(), TextField.Store.YES));
+    fields.add(new TextField(LuceneConstants.FILE_NAME,
+        file.getName(), Field.Store.YES));
+    fields.add(new TextField(LuceneConstants.FILE_PATH,
+        file.getCanonicalPath(), Field.Store.YES));
 
-    for (TextField field : textFields)
+    for (TextField field : fields)
       document.add(field);
 
     return document;
   }
 
+  public IndexWriter getIndexWriter() {
+    return indexWriter;
+  }
 }
