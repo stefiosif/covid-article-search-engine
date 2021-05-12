@@ -8,68 +8,64 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.document.TextField;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class Indexer {
 
-  private IndexWriter indexWriter;
+  private IndexWriter writer;
 
-  public Indexer(String indexDirectoryPath) throws IOException {
+  public Indexer(String indexDir, String dataDir) throws IOException {
 
-    Directory indexDirectory =
-        FSDirectory.open(new File(indexDirectoryPath).toPath());
+    Directory dir = FSDirectory.open(new File(indexDir).toPath());
     StandardAnalyzer analyzer = new StandardAnalyzer();
-    IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
-    indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
+    IndexWriterConfig writerConfig = new IndexWriterConfig(analyzer);
+    writer = new IndexWriter(dir, writerConfig);
 
-    createIndex(LuceneConstants.ARTICLES_PATH);
+    writer.deleteAll();
+    index(dataDir);
 
-    indexWriter.close();
+    writer.close();
   }
 
-  private void createIndex(String dataDirPath) throws IOException {
+  private void index(String dataDirPath) throws IOException {
 
     File[] files = new File(dataDirPath).listFiles();
 
     for (File file : files)
-      indexWriter.addDocument(createDocument(file));
+      writer.addDocument(getDocument(file));
   }
 
-  private Document createDocument(File file) throws IOException {
+  private Document getDocument(File file) throws IOException {
 
-    Document document = new Document();
+    Document doc = new Document();
     BufferedReader br = new BufferedReader(new FileReader(file));
-    ArrayList<TextField> fields = new ArrayList<>();
 
-    fields.add(new TextField(LuceneConstants.ARTICLE_AUTHOR,
+    // Fields for the article's info
+    doc.add(new TextField(LuceneConstants.ARTICLE_AUTHOR,
         br.readLine(), Field.Store.YES));
-    fields.add(new TextField(LuceneConstants.ARTICLE_DATE,
+    doc.add(new TextField(LuceneConstants.ARTICLE_DATE,
         br.readLine(), Field.Store.YES));
-    fields.add(new TextField(LuceneConstants.ARTICLE_FOCUS,
+    doc.add(new TextField(LuceneConstants.ARTICLE_FOCUS,
         br.readLine(), Field.Store.YES));
-    fields.add(new TextField(LuceneConstants.ARTICLE_TITLE,
+    doc.add(new TextField(LuceneConstants.ARTICLE_TITLE,
         br.readLine(), Field.Store.YES));
-    fields.add(new TextField(LuceneConstants.ARTICLE_CONTENTS,
-        br.lines().collect(Collectors.joining()), Field.Store.NO));
+    doc.add(new TextField(LuceneConstants.ARTICLE_CONTENTS,
+        br.lines().collect(Collectors.joining()), Field.Store.YES));
 
-    fields.add(new TextField(LuceneConstants.FILE_NAME,
+    // Fields for the article's file info
+    doc.add(new TextField(LuceneConstants.FILE_NAME,
         file.getName(), Field.Store.YES));
-    fields.add(new TextField(LuceneConstants.FILE_PATH,
+    doc.add(new TextField(LuceneConstants.FILE_PATH,
         file.getCanonicalPath(), Field.Store.YES));
 
-    for (TextField field : fields)
-      document.add(field);
-
-    return document;
+    return doc;
   }
 
-  public IndexWriter getIndexWriter() {
-    return indexWriter;
+  public IndexWriter getWriter() {
+    return writer;
   }
 }

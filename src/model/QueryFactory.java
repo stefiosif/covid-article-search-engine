@@ -1,8 +1,6 @@
 package model;
 
-import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 
 public class QueryFactory {
 
