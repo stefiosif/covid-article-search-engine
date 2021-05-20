@@ -38,11 +38,18 @@ public class ActionHandler {
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
 
 
-        for (ArrayList<String> field : results){
-            for (String str : field){
-                vBox.getChildren().add(new Text(str));
-            }
-        }
+//        for (ArrayList<String> field : results){
+//            for (String str : field){
+//                vBox.getChildren().add(new Text(str));
+//            }
+//        }
+//        for (ArrayList<String> field : results){
+//            for (String str : field){
+//                System.out.println(str);
+//            }
+//        }
+        System.out.println(searchInput);
+
 
         window.setScene(resultScene);
         window.show();
