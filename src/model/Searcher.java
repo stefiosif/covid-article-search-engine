@@ -12,59 +12,54 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Searcher {
 
   private IndexSearcher searcher;
+  private Directory index;
 
   public Searcher(String indexDir) throws IOException {
 
-    Directory dir = FSDirectory.open(new File(indexDir).toPath());
-    IndexReader reader = DirectoryReader.open(dir);
+    index = FSDirectory.open(new File(indexDir).toPath());
+    IndexReader reader = DirectoryReader.open(index);
     searcher = new IndexSearcher(reader);
   }
 
-  public ArrayList<ArrayList<String>> search(String searchQuery) throws IOException, ParseException {
+  public List<Result> search(String searchQuery) throws IOException, ParseException {
 
     QueryParser parser =
-        new QueryParser(LuceneConstants.ARTICLE_CONTENTS, new StandardAnalyzer());
+        new QueryParser(Constants.ARTICLE_CONTENTS, new StandardAnalyzer());
     Query query = parser.parse(searchQuery);
-    TopDocs hits = searcher.search(query, 20);
+    TopDocs hits = searcher.search(query, 10);
 
-    ArrayList<String> titles = new ArrayList<>();
-    ArrayList<String> descriptions = new ArrayList<>();
+    List<Result> results = new ArrayList<>();
     for (ScoreDoc sd : hits.scoreDocs) {
       Document doc = searcher.doc(sd.doc);
 
-      titles.add(String.format(doc.get(LuceneConstants.ARTICLE_TITLE)));
-      descriptions.add(makeDescription(doc.get(LuceneConstants.ARTICLE_CONTENTS), searchQuery));
+      results.add(new Result(String.format(doc.get(Constants.ARTICLE_TITLE)), doc.get(Constants.ARTICLE_FOCUS)));
     }
-
-    ArrayList<ArrayList<String>> data = new ArrayList<>();
-    data.add(titles);
-    data.add(descriptions);
     
-    return data;
+    return results;
   }
 
-  private String makeDescription(String content, String query) {
-    int position = content.indexOf(query);
-    String subString = content.substring(content.lastIndexOf(query));
-
-    Scanner sc = new Scanner(subString);
-    int wordCount = 0;
-    String description = "";
-    while (wordCount < 20 && sc.hasNext()){
-      String word = sc.next();
-      description = description.concat(" " + word);
-      wordCount++;
-    }
-
-    return description;
-  }
+//  private String makeDescription(String content, String query) {
+//    int position = content.indexOf(query);
+//    String subString = content.substring(content.lastIndexOf(query));
+//
+//    Scanner sc = new Scanner(subString);
+//    int wordCount = 0;
+//    String description = "";
+//    while (wordCount < 20 && sc.hasNext()){
+//      String word = sc.next();
+//      description = description.concat(" " + word);
+//      wordCount++;
+//    }
+//
+//    return description;
+//  }
 }
