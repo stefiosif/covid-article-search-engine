@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Searcher {
 
@@ -26,8 +25,7 @@ public class Searcher {
   public Searcher(String indexDir) throws IOException {
 
     index = FSDirectory.open(new File(indexDir).toPath());
-    IndexReader reader = DirectoryReader.open(index);
-    searcher = new IndexSearcher(reader);
+    searcher = new IndexSearcher(DirectoryReader.open(index));
   }
 
   public List<Result> search(String searchQuery) throws IOException, ParseException {
@@ -41,25 +39,15 @@ public class Searcher {
     for (ScoreDoc sd : hits.scoreDocs) {
       Document doc = searcher.doc(sd.doc);
 
-      results.add(new Result(String.format(doc.get(Constants.ARTICLE_TITLE)), doc.get(Constants.ARTICLE_FOCUS)));
+      results.add(new Result(
+          doc.get(Constants.ARTICLE_TITLE),
+          doc.get(Constants.ARTICLE_AUTHOR),
+          doc.get(Constants.ARTICLE_DATE),
+          doc.get(Constants.ARTICLE_FOCUS),
+          doc.get(Constants.ARTICLE_CONTENTS)));
     }
     
     return results;
   }
 
-//  private String makeDescription(String content, String query) {
-//    int position = content.indexOf(query);
-//    String subString = content.substring(content.lastIndexOf(query));
-//
-//    Scanner sc = new Scanner(subString);
-//    int wordCount = 0;
-//    String description = "";
-//    while (wordCount < 20 && sc.hasNext()){
-//      String word = sc.next();
-//      description = description.concat(" " + word);
-//      wordCount++;
-//    }
-//
-//    return description;
-//  }
 }

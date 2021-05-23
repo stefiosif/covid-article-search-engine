@@ -10,13 +10,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ResultsController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ResultsController">
    <bottom>
       <ButtonBar buttonMinWidth="60.0" buttonOrder="L_E+U+FBXI_YNOCAH_R" prefHeight="40.0" prefWidth="800.0" BorderPane.alignment="CENTER">
         <buttons>
-          <Button fx:id="btnPrev" mnemonicParsing="false" text="Previous" />
-            <Button fx:id="btnNext" mnemonicParsing="false" text="Next" />
+          <Button fx:id="btnPrev" mnemonicParsing="false" onAction="#showPrevious" text="Previous" />
+            <Button fx:id="btnNext" mnemonicParsing="false" onAction="#showNext" text="Next" />
         </buttons>
          <padding>
             <Insets right="230.0" />
@@ -26,7 +25,7 @@
    <top>
       <AnchorPane prefHeight="100.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField layoutX="242.0" layoutY="28.0" prefHeight="40.0" prefWidth="420.0" promptText="Keep on searching">
+            <TextField fx:id="searchInput" layoutX="242.0" layoutY="28.0" prefHeight="40.0" prefWidth="420.0" promptText="Keep on searching">
                <font>
                   <Font name="Candara Light" size="16.0" />
                </font>
@@ -36,7 +35,7 @@
                   <Font name="Candara" size="40.0" />
                </font>
             </Text>
-            <Button layoutX="672.0" layoutY="28.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="72.0" text="Search" textAlignment="CENTER">
+            <Button layoutX="672.0" layoutY="28.0" mnemonicParsing="false" onAction="#searchAdvanced" prefHeight="40.0" prefWidth="72.0" text="Search" textAlignment="CENTER">
                <font>
                   <Font name="Candara Light" size="14.0" />
                </font>
@@ -54,7 +53,7 @@
          <children>
             <Text layoutX="257.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search results">
                <font>
-                  <Font name="Candara Light Italic" size="18.0" />
+                  <Font name="Candara Light" size="18.0" />
                </font>
             </Text>
             <VBox fx:id="resVBox" layoutX="8.0" layoutY="23.0" prefHeight="437.0" prefWidth="600.0" />

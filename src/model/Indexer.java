@@ -33,9 +33,10 @@ public class Indexer {
     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
     IndexWriter iw = new IndexWriter(index, iwc);
 
-    // Retrieve files from the given local path
-    File[] files = new File(dataDir).listFiles();
+    // Delete previous launch index
+    iw.deleteAll();
 
+    File[] files = new File(dataDir).listFiles();
     for (File file : files)
       iw.addDocument(createDoc(file));
 

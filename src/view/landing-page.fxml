@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LandingPageController">
-      <Button layoutX="312.0" layoutY="319.0" mnemonicParsing="false" onAction="#searchDocuments" prefHeight="20.0" prefWidth="125.0" text="Search" textAlignment="CENTER">
+      <Button layoutX="312.0" layoutY="319.0" mnemonicParsing="false" onAction="#searchSimple" prefHeight="20.0" prefWidth="125.0" text="Search" textAlignment="CENTER">
          <font>
             <Font name="Candara Light" size="18.0" />
          </font>
@@ -17,12 +17,12 @@
             <Font name="Candara Light" size="20.0" />
          </font>
       </TextField>
-   <Text fill="#00206e" layoutX="250.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COVID-19" underline="true" wrappingWidth="300.13671875">
+   <Text fill="#00206e" layoutX="272.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COVID-19" underline="true" wrappingWidth="256.13671875">
       <font>
          <Font name="Candara" size="64.0" />
       </font>
    </Text>
-   <Text fill="#00206e" layoutX="250.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="and the non-medical impacts" wrappingWidth="249.13671875">
+   <Text fill="#00206e" layoutX="274.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="and the non-medical impacts" wrappingWidth="249.13671875">
       <font>
          <Font name="Candara Light" size="12.0" />
       </font>

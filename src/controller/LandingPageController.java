@@ -19,23 +19,23 @@ public class LandingPageController {
     private TextField searchInput;
 
     @FXML
-    public void searchDocuments(ActionEvent event) throws IOException, ParseException {
+    public void searchSimple(ActionEvent event) throws IOException, ParseException {
 
         String toSearch = searchInput.getText();
         List<Result> results
             = Main.getInstance().getSearcher().search(toSearch);
 
-        showResultScene(event, results);
+        switchScene(event, results);
     }
 
-    private void showResultScene(ActionEvent event, List<Result> results) throws IOException {
+    private void switchScene(ActionEvent event, List<Result> results) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/results-page.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(loader.load()));
-
         ResultsController controller = loader.getController();
-        controller.sendResults(results);
+        controller.showResults(results);
         stage.show();
     }
+
 }
