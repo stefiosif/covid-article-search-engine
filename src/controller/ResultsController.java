@@ -2,13 +2,15 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.Result;
 import org.apache.lucene.queryparser.classic.ParseException;
 import view.Main;
@@ -40,6 +42,13 @@ public class ResultsController {
     search(query);
   }
 
+  public void initialize() {
+
+    historyVBox.setAlignment(Pos.TOP_CENTER);
+    btnPrev.setVisible(false);
+    history = new LinkedList<>();
+  }
+
   private void search(String query) throws IOException, ParseException {
 
     List<Result> results
@@ -49,17 +58,19 @@ public class ResultsController {
     showResults(results, 0);
   }
 
-  public void initialize() {
-
-    historyVBox.setAlignment(Pos.TOP_CENTER);
-    btnPrev.setVisible(false);
-    history = new LinkedList<>();
-  }
-
   public void showResults(List<Result> res, int page) {
 
     setResults(res);
     resVBox.getChildren().clear();
+
+    if (res.size() == 0) {
+
+      Text notFound = new Text("No results found.");
+      notFound.setFont(new Font("Candara Light", 17.0));
+      resVBox.getChildren().add(notFound);
+      return;
+    }
+
     int x = 10;
     if (results.size() - (10 * pageId) < 10)
       x = res.size() - page * 10;
@@ -70,10 +81,51 @@ public class ResultsController {
       desc.setWrappingWidth(600);
       link.setWrapText(true);
       link.setFont(new Font("Candara Light", 17.0));
+      setLink(link);
       desc.setFont(new Font("Candara Light", 12.0));
       resVBox.getChildren().add(link);
       resVBox.getChildren().add(desc);
     }
+  }
+
+  private void setLink(Hyperlink link) {
+
+    link.setOnAction(e -> {
+      String txt = link.getText();
+      for (Result r : results) {
+        if (r.getTitle().equals(txt)) {
+          viewDoc(r);
+          break;
+        }
+      }
+    });
+  }
+
+  private void viewDoc(Result r) {
+
+    ScrollPane pane = new ScrollPane();
+    pane.setPadding(new Insets(10));
+    VBox vbox = new VBox();
+    pane.setContent(vbox);
+
+    Stage stage = new Stage(StageStyle.UTILITY);
+    stage.setScene(new Scene(pane, 800, 600));
+    stage.setTitle(r.getTitle());
+
+    Text title = new Text(r.getTitle());
+    title.setWrappingWidth(780);
+    title.setFont(new Font("Arial", 18.0));
+    title.setUnderline(true);
+
+    Text contents = new Text(r.getContents());
+    contents.setWrappingWidth(780);
+    contents.setFont(new Font("Arial", 14.0));
+
+    vbox.getChildren().add(title);
+    vbox.getChildren().add(new Text("\n"));
+    vbox.getChildren().add(contents);
+
+    stage.show();
   }
 
   private void setResults(List<Result> results) {
