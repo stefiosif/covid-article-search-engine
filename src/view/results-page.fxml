@@ -65,16 +65,16 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Suggestions" textAlignment="CENTER" wrappingWidth="200.13671875">
                <font>
-                  <Font name="Candara Light" size="14.0" />
+                  <Font name="Candara Light" size="24.0" />
                </font>
             </Text>
             <VBox prefHeight="200.0" prefWidth="100.0" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="History" textAlignment="CENTER" wrappingWidth="200.1865234375">
                <font>
-                  <Font name="Candara Light" size="14.0" />
+                  <Font name="Candara Light" size="24.0" />
                </font>
             </Text>
-            <VBox prefHeight="200.0" prefWidth="100.0" />
+            <VBox fx:id="historyVBox" prefHeight="200.0" prefWidth="100.0" />
          </children>
       </VBox>
    </left>

@@ -6,16 +6,20 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
+import org.apache.lucene.search.highlight.Fragmenter;
+import org.apache.lucene.search.highlight.QueryScorer;
+import org.apache.lucene.search.uhighlight.UnifiedHighlighter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+
+import javax.swing.text.Highlighter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Searcher {
 
@@ -33,10 +37,14 @@ public class Searcher {
     QueryParser parser =
         new QueryParser(Constants.ARTICLE_CONTENTS, new StandardAnalyzer());
     Query query = parser.parse(searchQuery);
-    TopDocs hits = searcher.search(query, 10);
+    TopDocs topDocs = searcher.search(query, 50, Sort.RELEVANCE);
+
+    UnifiedHighlighter highlighter = new UnifiedHighlighter(searcher, new StandardAnalyzer());
+    String[] m = highlighter.highlight(Constants.ARTICLE_TITLE, query, topDocs);
 
     List<Result> results = new ArrayList<>();
-    for (ScoreDoc sd : hits.scoreDocs) {
+    var i = 0;
+    for (ScoreDoc sd : topDocs.scoreDocs) {
       Document doc = searcher.doc(sd.doc);
 
       results.add(new Result(
@@ -45,8 +53,10 @@ public class Searcher {
           doc.get(Constants.ARTICLE_DATE),
           doc.get(Constants.ARTICLE_FOCUS),
           doc.get(Constants.ARTICLE_CONTENTS)));
+
+      results.get(i).createHighlight(m[i++]);
     }
-    
+
     return results;
   }
 

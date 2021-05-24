@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Result;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -25,16 +26,20 @@ public class LandingPageController {
         List<Result> results
             = Main.getInstance().getSearcher().search(toSearch);
 
-        switchScene(event, results);
+        switchScene(event, results, toSearch);
     }
 
-    private void switchScene(ActionEvent event, List<Result> results) throws IOException {
+    private void switchScene(ActionEvent event, List<Result> results, String toSearch) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/results-page.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(loader.load()));
+
+        // Pass results to results-page.fxml controller class
         ResultsController controller = loader.getController();
-        controller.showResults(results);
+        controller.updateHistory(toSearch);
+        controller.showResults(results, 0);
+
         stage.show();
     }
 

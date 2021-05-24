@@ -3,6 +3,7 @@ package model;
 public class Result {
 
   private final String title, author, date, focus, contents;
+  private String highlight;
 
   public Result(String title, String author, String date, String focus, String contents){
 
@@ -33,4 +34,11 @@ public class Result {
     return contents;
   }
 
+  public void createHighlight(String s) {
+    this.highlight = s;
+  }
+
+  public String getHighlight() {
+    return highlight;
+  }
 }
