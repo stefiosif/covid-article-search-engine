@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -43,9 +44,6 @@ public class ResultsController {
 
   @FXML
   private Button btnPrev, btnNext;
-
-  @FXML
-  private AnchorPane topAnchor, midAnchor;
 
   @FXML
   private Text metaText;
@@ -103,7 +101,7 @@ public class ResultsController {
     showResults(results, ++pageId);
 
     btnPrev.setVisible(true);
-    if (results.size() - (10 * pageId) < 10)
+    if (results.size() - (6 * pageId) < 6)
       btnNext.setVisible(false);
   }
 
@@ -128,11 +126,22 @@ public class ResultsController {
     showResults(results, 0);
 
     // Set suggestions
-    String[] suggestions = Main.getInstance().getIndexer().getSpellChecker().suggestSimilar(query, 5);
+    String[] suggestions = Main.getInstance().getIndexer().getSpellChecker().suggestSimilar(query, 3);
     suggestHBox.getChildren().clear();
     for (var s : suggestions) {
       Hyperlink link = new Hyperlink(s);
-      openArticle(link);
+      link.setOnAction(e -> {
+        String txt = link.getText();
+        try {
+          search(txt);
+        } catch (IOException ioException) {
+          ioException.printStackTrace();
+        } catch (ParseException parseException) {
+          parseException.printStackTrace();
+        } catch (InvalidTokenOffsetsException invalidTokenOffsetsException) {
+          invalidTokenOffsetsException.printStackTrace();
+        }
+      });
       suggestHBox.getChildren().add(link);
     }
 
@@ -181,9 +190,11 @@ public class ResultsController {
 
       WebView webView = new WebView();
       WebEngine webEngine = webView.getEngine();
-      webEngine.loadContent("<body style=\"background-color:rgb(245,245,245)\">"
+      webEngine.loadContent(
+          "<body style=\"background-color:rgb(245,245,245)\">"
           + res.get(i).getHighlight() + "</body>");
       resVBox.getChildren().add(link);
+      resVBox.setPadding(new Insets(0, 0, 0, 0));
       resVBox.getChildren().add(webView);
     }
 

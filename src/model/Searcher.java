@@ -70,7 +70,7 @@ public class Searcher {
           searcher.getIndexReader(), id, Constants.ARTICLE_CONTENTS, new StandardAnalyzer());
       String text = doc.get(Constants.ARTICLE_CONTENTS);
       TextFragment[] frag = highlighter.getBestTextFragments(
-          tokenStream, text, false, 5);
+          tokenStream, text, false, 1);
       String out = "";
       for (int j = 0; j < frag.length; j++) {
         if ((frag[j] != null) && (frag[j].getScore() > 0)) {

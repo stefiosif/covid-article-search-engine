@@ -19,13 +19,16 @@
           <Button fx:id="btnPrev" mnemonicParsing="false" onAction="#showPrevious" style="-fx-background-color: #375aab;" text="Previous" textFill="#ebe5e5" />
             <Button fx:id="btnNext" mnemonicParsing="false" onAction="#showNext" style="-fx-background-color: #375aab;" text="Next" textFill="#ebe5e5" />
         </buttons>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
          <padding>
-            <Insets right="270.0" />
+            <Insets right="330.0" />
          </padding>
       </ButtonBar>
    </bottom>
    <top>
-      <AnchorPane fx:id="topAnchor" prefHeight="100.0" prefWidth="800.0" style="-fx-border-color: #aeb6c6; -fx-background-color: #dee1e8; -fx-border-width: 0 0 1 0;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="100.0" prefWidth="800.0" style="-fx-border-color: #aeb6c6; -fx-background-color: #dee1e8; -fx-border-width: 0 0 1 0;" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="searchInput" layoutX="217.0" layoutY="22.0" prefHeight="30.0" prefWidth="318.0" promptText="Keep on searching">
                <font>
@@ -54,7 +57,7 @@
       </AnchorPane>
    </top>
    <center>
-      <AnchorPane fx:id="midAnchor" prefHeight="460.0" prefWidth="650.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="460.0" prefWidth="650.0" BorderPane.alignment="CENTER">
          <children>
             <VBox fx:id="resVBox" layoutX="14.0" layoutY="36.0" prefHeight="410.0" prefWidth="770.0" />
             <Text fx:id="metaText" layoutX="20.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" />
