@@ -7,6 +7,7 @@ public final class Constants {
     
     // Constants about local I/O paths
     public static final String INDEX_PATH = "tmp/index";
+    public static final String SPELLCHECKER_PATH = "tmp/spellchecker";
     public static final String ARTICLES_PATH = "resources\\articles";
     public static final String FILE_PATH = "filepath";
     public static final String FILE_NAME = "filename";

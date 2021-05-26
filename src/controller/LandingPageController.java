@@ -10,8 +10,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.NextQuery;
 import model.Result;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import view.Main;
 import java.io.IOException;
 import java.util.List;
@@ -22,16 +24,7 @@ public class LandingPageController {
     private TextField searchInput;
 
     @FXML
-    public void searchSimple(ActionEvent event) throws IOException, ParseException {
-
-        String toSearch = searchInput.getText();
-        List<Result> results
-            = Main.getInstance().getSearcher().search(toSearch);
-
-        switchScene(event, results, toSearch);
-    }
-
-    private void switchScene(ActionEvent event, List<Result> results, String toSearch) throws IOException {
+    public void searchSimple(ActionEvent event) throws IOException, ParseException, InvalidTokenOffsetsException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/results-page.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -39,10 +32,12 @@ public class LandingPageController {
 
         // Pass results to results-page.fxml controller class
         ResultsController controller = loader.getController();
-        controller.updateHistory(toSearch);
-        controller.showResults(results, 0);
+
+        controller.updateHistory(searchInput.getText());
+        controller.search(searchInput.getText());
 
         stage.show();
+
     }
 
 }

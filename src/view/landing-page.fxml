@@ -17,7 +17,7 @@
             <Font name="Candara Light" size="20.0" />
          </font>
       </TextField>
-   <Text fill="#00206e" layoutX="272.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COVID-19" underline="true" wrappingWidth="256.13671875">
+   <Text fill="#375aab" layoutX="272.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COVID-19" underline="true" wrappingWidth="256.13671875">
       <font>
          <Font name="Candara" size="64.0" />
       </font>

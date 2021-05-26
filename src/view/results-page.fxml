@@ -3,79 +3,62 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ResultsController">
    <bottom>
-      <ButtonBar buttonMinWidth="60.0" buttonOrder="L_E+U+FBXI_YNOCAH_R" prefHeight="40.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <ButtonBar buttonMinWidth="60.0" buttonOrder="L_E+U+FBXI_YNOCAH_R" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: #dee1e8; -fx-border-color: #aeb6c6; -fx-border-width: 1 0 0 0;" BorderPane.alignment="CENTER">
         <buttons>
-          <Button fx:id="btnPrev" mnemonicParsing="false" onAction="#showPrevious" text="Previous" />
-            <Button fx:id="btnNext" mnemonicParsing="false" onAction="#showNext" text="Next" />
+          <Button fx:id="btnPrev" mnemonicParsing="false" onAction="#showPrevious" style="-fx-background-color: #375aab;" text="Previous" textFill="#ebe5e5" />
+            <Button fx:id="btnNext" mnemonicParsing="false" onAction="#showNext" style="-fx-background-color: #375aab;" text="Next" textFill="#ebe5e5" />
         </buttons>
          <padding>
-            <Insets right="230.0" />
+            <Insets right="270.0" />
          </padding>
       </ButtonBar>
    </bottom>
    <top>
-      <AnchorPane prefHeight="100.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="topAnchor" prefHeight="100.0" prefWidth="800.0" style="-fx-border-color: #aeb6c6; -fx-background-color: #dee1e8; -fx-border-width: 0 0 1 0;" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="searchInput" layoutX="242.0" layoutY="28.0" prefHeight="40.0" prefWidth="420.0" promptText="Keep on searching">
+            <TextField fx:id="searchInput" layoutX="217.0" layoutY="22.0" prefHeight="30.0" prefWidth="318.0" promptText="Keep on searching">
                <font>
                   <Font name="Candara Light" size="16.0" />
                </font>
             </TextField>
-            <Text fill="#00206e" layoutX="46.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COVID-19" underline="true" wrappingWidth="165.8828125">
+            <Text fill="#375aab" layoutX="34.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COVID-19" underline="true" wrappingWidth="165.8828125">
                <font>
                   <Font name="Candara" size="40.0" />
                </font>
             </Text>
-            <Button layoutX="672.0" layoutY="28.0" mnemonicParsing="false" onAction="#searchAdvanced" prefHeight="40.0" prefWidth="72.0" text="Search" textAlignment="CENTER">
+            <Button layoutX="533.0" layoutY="22.0" mnemonicParsing="false" onAction="#searchAdvanced" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #375aab;" text="Search" textAlignment="CENTER" textFill="#ebe5e5">
                <font>
                   <Font name="Candara Light" size="14.0" />
                </font>
             </Button>
-            <Text fill="#00206e" layoutX="48.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="and the non-medical impacts" wrappingWidth="160.13671875">
+            <Text fill="#00206e" layoutX="34.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="and the non-medical impacts" wrappingWidth="160.13671875">
                <font>
                   <Font name="Candara Light" size="10.0" />
                </font>
             </Text>
+            <ComboBox fx:id="sortBox" layoutX="593.0" layoutY="22.0" onAction="#sortBy" prefHeight="30.0" prefWidth="85.0" promptText="Sort by" />
+            <ComboBox fx:id="focusBox" layoutX="678.0" layoutY="22.0" onAction="#chooseFocus" prefHeight="30.0" prefWidth="97.0" promptText="Advanced" />
+            <HBox fx:id="suggestHBox" layoutX="216.0" layoutY="50.0" prefHeight="40.0" prefWidth="318.0" />
          </children>
       </AnchorPane>
    </top>
    <center>
-      <AnchorPane prefHeight="460.0" prefWidth="650.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="midAnchor" prefHeight="460.0" prefWidth="650.0" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="257.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search results">
-               <font>
-                  <Font name="Candara Light" size="18.0" />
-               </font>
-            </Text>
-            <VBox fx:id="resVBox" layoutX="8.0" layoutY="23.0" prefHeight="437.0" prefWidth="600.0" />
+            <VBox fx:id="resVBox" layoutX="15.0" layoutY="25.0" prefHeight="410.0" prefWidth="770.0" />
+            <Text fx:id="metaText" layoutX="20.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" />
          </children>
       </AnchorPane>
    </center>
-   <left>
-      <VBox prefHeight="460.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Suggestions" textAlignment="CENTER" wrappingWidth="200.13671875">
-               <font>
-                  <Font name="Candara Light" size="24.0" />
-               </font>
-            </Text>
-            <VBox prefHeight="200.0" prefWidth="100.0" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="History" textAlignment="CENTER" wrappingWidth="200.1865234375">
-               <font>
-                  <Font name="Candara Light" size="24.0" />
-               </font>
-            </Text>
-            <VBox fx:id="historyVBox" prefHeight="200.0" prefWidth="100.0" />
-         </children>
-      </VBox>
-   </left>
 </BorderPane>
