@@ -1,23 +1,34 @@
 package controller;
 
+import com.sun.webkit.WebPage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.web.HTMLEditor;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import model.NextQuery;
 import model.Result;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.apache.lucene.search.highlight.QueryScorer;
+import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import view.ArticleViewer;
 import view.Main;
 
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -113,9 +124,6 @@ public class ResultsController {
     List<Result> results
         = Main.getInstance().getSearcher().search(query, nextQuery);
 
-//    SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
-//    Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(query));
-
     updateHistory(query);
     showResults(results, 0);
 
@@ -163,15 +171,20 @@ public class ResultsController {
     for (int i = page * 6; i < page * 6 + x; i++) {
 
       Hyperlink link = new Hyperlink(res.get(i).getTitle());
-      Text desc = new Text(res.get(i).getHighlight());
-      desc.setWrappingWidth(600);
-      desc.setFont(openSans14);
       link.setWrapText(true);
       link.setFont(openSans18);
       openArticle(link);
-      //resVBox.getChildren().add(new Text(res.get(i).getDate()));
+
+      Text desc = new Text(res.get(i).getHighlight());
+      desc.setWrappingWidth(600);
+      desc.setFont(openSans14);
+
+      WebView webView = new WebView();
+      WebEngine webEngine = webView.getEngine();
+      webEngine.loadContent("<body style=\"background-color:rgb(245,245,245)\">"
+          + res.get(i).getHighlight() + "</body>");
       resVBox.getChildren().add(link);
-      resVBox.getChildren().add(desc);
+      resVBox.getChildren().add(webView);
     }
 
     // Adjust buttons

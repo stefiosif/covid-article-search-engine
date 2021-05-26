@@ -1,5 +1,6 @@
 package model;
 
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -55,11 +56,27 @@ public class Searcher {
       topDocs = searcher.search(query, 48, new Sort(new SortField(Constants.ARTICLE_DATE, SortField.Type.STRING)));
     }
 
+    SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
+    Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(query));
+
+
     List<Result> results = new ArrayList<>();
     var i = 0;
     for (ScoreDoc sd : topDocs.scoreDocs) {
-      Document doc = searcher.doc(sd.doc);
+      int id = sd.doc;
+      Document doc = searcher.doc(id);
 
+      TokenStream tokenStream = TokenSources.getAnyTokenStream(
+          searcher.getIndexReader(), id, Constants.ARTICLE_CONTENTS, new StandardAnalyzer());
+      String text = doc.get(Constants.ARTICLE_CONTENTS);
+      TextFragment[] frag = highlighter.getBestTextFragments(
+          tokenStream, text, false, 5);
+      String out = "";
+      for (int j = 0; j < frag.length; j++) {
+        if ((frag[j] != null) && (frag[j].getScore() > 0)) {
+          out += frag[j].toString();
+        }
+      }
       results.add(new Result(
           doc.get(Constants.ARTICLE_TITLE),
           doc.get(Constants.ARTICLE_AUTHOR),
@@ -67,69 +84,11 @@ public class Searcher {
           doc.get(Constants.ARTICLE_FOCUS),
           doc.get(Constants.ARTICLE_CONTENTS)));
 
-      String m = findA(doc.get(Constants.ARTICLE_CONTENTS), searchQuery);
-      results.get(i).createHighlight(m);
+      results.get(i).createHighlight(out);
       i++;
     }
 
     return results;
-  }
-
-  public static String findA(String st, String pointer) {
-    String lines[] = st.split(" ");
-    int position=0;
-    String  a = "", b = "", c = "";
-    // vriskei tin thesi tis leksis
-    for(int i=0; i<lines.length; i++)
-    {
-      if(lines[i].equals(pointer))
-      {
-        position = i;
-        a += lines[i];
-        break;
-      }
-    }
-    // typonei to proto meros kai elegxei an to megethos ine < 10 gia na kanei analogo print
-    for(int i=0; i<lines.length; i++)
-    {
-      if(position==i && i >= 10)
-      {
-        for(int j=i-10; j<i; j++)
-        {
-          b += lines[j] + " ";
-        }
-        break;
-      }
-      else if (position==i && i< 10)
-      {
-        for(int j=0; j<i; j++)
-        {
-          b += lines[j] + " ";
-        }
-        break;
-      }
-    }
-    // typonei to deutero meros kai elegxei an to telos tou einai <10, an einai typonei to analogo print
-      for(int i=0; i<lines.length; i++)
-    {
-      if(position == i)
-      {
-        for(int j=i+1; j<i+11; j++)
-        {
-          if(lines[j].equals(lines[lines.length - 1]))
-          {
-            c += lines[j] + " ";
-            break;
-          }
-          else
-          {
-            c += lines[j] + " ";
-          }
-        }
-        break;
-      }
-    }
-    return b + " --> " + a + " <-- " + c;
   }
 
 }
