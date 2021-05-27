@@ -24,9 +24,9 @@ public class ArticleViewer {
     Font font18 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
         "/view/OpenSans-Regular.ttf")).toExternalForm(), 20);
     Font font14 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-        "/view/Poppins-Light.ttf")).toExternalForm(), 14);
+        "/view/Poppins-Light.ttf")).toExternalForm(), 15);
     Font font12 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-        "/view/Poppins-Light.ttf")).toExternalForm(), 14);
+        "/view/Poppins-Light.ttf")).toExternalForm(), 13);
 
     Text title = new Text(r.getTitle());
     title.setFont(font18);

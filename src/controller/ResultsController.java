@@ -105,7 +105,6 @@ public class ResultsController {
     searchInput.setText(query);
 
     long start = System.nanoTime();
-    System.out.println(advancedSearch.getFocus());
     List<Result> results
         = Main.getInstance().getSearcher().search(query, advancedSearch);
 

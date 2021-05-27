@@ -4,7 +4,6 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.Directory;
@@ -26,11 +25,7 @@ public class Searcher {
 
   public List<Result> search(String searchQuery, AdvancedSearch options) throws IOException, ParseException, InvalidTokenOffsetsException {
 
-    //QueryParser parser = new QueryParser(Constants.ARTICLE_CONTENTS, new StandardAnalyzer());
-
     Query query = QueryBuilder.createQuery(searchQuery, options.getFocus());
-
-//    Query query = parser.parse(searchQuery);
 
     TopDocs topDocs;
     if (options.getSortBy().equals("relevance"))

@@ -82,12 +82,6 @@ public class Indexer {
     doc.add(new TextField(Constants.ARTICLE_CONTENTS,
         br.lines().collect(Collectors.joining()), Field.Store.YES));
 
-    // Fields for the article's file info
-    doc.add(new TextField(Constants.FILE_NAME,
-        file.getName(), Field.Store.YES));
-    doc.add(new TextField(Constants.FILE_PATH,
-        file.getCanonicalPath(), Field.Store.YES));
-
     return doc;
   }
 }
