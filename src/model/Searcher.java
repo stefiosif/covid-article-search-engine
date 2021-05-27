@@ -24,17 +24,19 @@ public class Searcher {
     searcher = new IndexSearcher(DirectoryReader.open(index));
   }
 
-  public List<Result> search(String searchQuery, NextQuery nextQuery) throws IOException, ParseException, InvalidTokenOffsetsException {
+  public List<Result> search(String searchQuery, AdvancedSearch options) throws IOException, ParseException, InvalidTokenOffsetsException {
 
-    QueryParser parser = new QueryParser(Constants.ARTICLE_CONTENTS, new StandardAnalyzer());
-    Query query = parser.parse(searchQuery);
+    //QueryParser parser = new QueryParser(Constants.ARTICLE_CONTENTS, new StandardAnalyzer());
+
+    Query query = QueryBuilder.createQuery(searchQuery, options.getFocus());
+
+//    Query query = parser.parse(searchQuery);
+
     TopDocs topDocs;
-
-    if (nextQuery.getSortBy().equals("relevance"))
+    if (options.getSortBy().equals("relevance"))
       topDocs = searcher.search(query, 48, Sort.RELEVANCE);
-    else {
+    else
       topDocs = searcher.search(query, 48, new Sort(new SortedNumericSortField(Constants.SORTBY_DATE, SortField.Type.LONG, true)));
-    }
 
     SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
     Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(query));

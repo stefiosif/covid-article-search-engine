@@ -1,10 +1,10 @@
 package model;
 
-public class NextQuery {
+public class AdvancedSearch {
 
   private String sort, focus;
 
-  public NextQuery() {
+  public AdvancedSearch() {
     this.sort = "relevance";
     this.focus = "all";
   }

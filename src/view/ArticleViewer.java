@@ -22,11 +22,11 @@ public class ArticleViewer {
     VBox vbox = new VBox();
 
     Font font18 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-        "/view/OpenSans-Regular.ttf")).toExternalForm(), 18);
+        "/view/OpenSans-Regular.ttf")).toExternalForm(), 20);
     Font font14 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
         "/view/Poppins-Light.ttf")).toExternalForm(), 14);
     Font font12 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-        "/view/Poppins-Light.ttf")).toExternalForm(), 12);
+        "/view/Poppins-Light.ttf")).toExternalForm(), 14);
 
     Text title = new Text(r.getTitle());
     title.setFont(font18);

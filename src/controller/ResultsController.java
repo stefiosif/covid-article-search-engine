@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import model.NextQuery;
+import model.AdvancedSearch;
 import model.Result;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
@@ -40,22 +40,23 @@ public class ResultsController {
 
   private int pageId = 0;
   private List<Result> results;
-  private NextQuery nextQuery;
-  private  WordCompletion wc;
+  private AdvancedSearch advancedSearch;
+  private WordCompletion wc;
 
   public void initialize() {
 
     wc = new WordCompletion(searchInput);
+
     // Create Advanced search options
     ObservableList<String> sortOptions = FXCollections.observableArrayList(
-        "Relevance", "Date");
+        "Date", "Relevance");
     sortBox.setItems(sortOptions);
     ObservableList<String> focusOptions = FXCollections.observableArrayList(
-        "Business", "General", "Tech", "Consumer", "Science", "Finance");
+        "All", "Business", "General", "Consumer", "Finance", "Science", "Tech");
     focusBox.setItems(focusOptions);
 
     // Create nextQuery
-    nextQuery = new NextQuery();
+    advancedSearch = new AdvancedSearch();
   }
 
   @FXML
@@ -91,12 +92,12 @@ public class ResultsController {
 
   @FXML
   private void sortBy() {
-    nextQuery.setSort(sortBox.getSelectionModel().getSelectedItem());
+    advancedSearch.setSort(sortBox.getSelectionModel().getSelectedItem().toLowerCase());
   }
 
   @FXML
   private void chooseFocus() {
-    nextQuery.setFocus(focusBox.getSelectionModel().getSelectedItem());
+    advancedSearch.setFocus(focusBox.getSelectionModel().getSelectedItem().toLowerCase());
   }
 
   public void search(String query) throws IOException, ParseException, InvalidTokenOffsetsException {
@@ -104,9 +105,9 @@ public class ResultsController {
     searchInput.setText(query);
 
     long start = System.nanoTime();
-
+    System.out.println(advancedSearch.getFocus());
     List<Result> results
-        = Main.getInstance().getSearcher().search(query, nextQuery);
+        = Main.getInstance().getSearcher().search(query, advancedSearch);
 
     var elapsedTime = System.nanoTime() - start;
     double searchingTime = (double) elapsedTime / 1_000_000_000;
@@ -118,8 +119,9 @@ public class ResultsController {
     showResults(results, 0);
 
     // Set suggestions
-    String[] suggestions = Main.getInstance().getIndexer().getSpellChecker().suggestSimilar(query, 3);
+    String[] suggestions = Main.getInstance().getIndexer().getSpellChecker().suggestSimilar(query, 4);
     suggestHBox.getChildren().clear();
+
     for (var s : suggestions) {
       Hyperlink link = new Hyperlink(s);
       link.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
