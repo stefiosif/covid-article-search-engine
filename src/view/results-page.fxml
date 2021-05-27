@@ -59,8 +59,8 @@
    <center>
       <AnchorPane prefHeight="460.0" prefWidth="650.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="resVBox" layoutX="14.0" layoutY="36.0" prefHeight="410.0" prefWidth="770.0" />
-            <Text fx:id="metaText" layoutX="20.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <VBox fx:id="resVBox" layoutX="5.0" layoutY="33.0" prefHeight="410.0" prefWidth="765.0" />
+            <Text fx:id="metaText" layoutX="15.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" />
          </children>
       </AnchorPane>
    </center>

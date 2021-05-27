@@ -1,38 +1,24 @@
 package controller;
 
-import com.sun.webkit.WebPage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.web.HTMLEditor;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
+import javafx.scene.text.TextFlow;
 import model.NextQuery;
 import model.Result;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import view.ArticleViewer;
 import view.Main;
-
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class ResultsController {
 
@@ -77,14 +63,16 @@ public class ResultsController {
   }
 
   @FXML
-  public void searchAdvanced(ActionEvent event) throws IOException, ParseException, InvalidTokenOffsetsException {
+  public void searchAdvanced() throws IOException, ParseException, InvalidTokenOffsetsException {
 
     String query = searchInput.getText();
+    if (query == null || query.equals("")) return;
+
     search(query);
   }
 
   @FXML
-  public void showPrevious(ActionEvent event) throws IOException {
+  public void showPrevious() {
 
     resVBox.getChildren().clear();
     showResults(results, --pageId);
@@ -95,27 +83,28 @@ public class ResultsController {
   }
 
   @FXML
-  public void showNext(ActionEvent event) throws IOException {
+  public void showNext() {
 
     resVBox.getChildren().clear();
     showResults(results, ++pageId);
 
     btnPrev.setVisible(true);
-    if (results.size() - (6 * pageId) < 6)
+    if (results.size() - (7 * pageId) < 7)
       btnNext.setVisible(false);
   }
 
   @FXML
-  void sortBy(ActionEvent event) {
+  private void sortBy() {
     nextQuery.setSort(sortBox.getSelectionModel().getSelectedItem());
   }
 
   @FXML
-  void chooseFocus(ActionEvent event) {
+  private void chooseFocus() {
     nextQuery.setFocus(focusBox.getSelectionModel().getSelectedItem());
   }
 
   public void search(String query) throws IOException, ParseException, InvalidTokenOffsetsException {
+
 
     long start = System.nanoTime();
 
@@ -130,79 +119,72 @@ public class ResultsController {
     suggestHBox.getChildren().clear();
     for (var s : suggestions) {
       Hyperlink link = new Hyperlink(s);
-      link.setOnAction(e -> {
-        String txt = link.getText();
-        try {
-          search(txt);
-        } catch (IOException ioException) {
-          ioException.printStackTrace();
-        } catch (ParseException parseException) {
-          parseException.printStackTrace();
-        } catch (InvalidTokenOffsetsException invalidTokenOffsetsException) {
-          invalidTokenOffsetsException.printStackTrace();
-        }
-      });
+      link.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+          "/view/OpenSans-Regular.ttf")).toExternalForm(), 12));
+      searchSuggestion(link);
       suggestHBox.getChildren().add(link);
     }
 
-    Font openSans14 = Font.loadFont(ResultsController.class.getResource(
-        "/view/OpenSans-Regular.ttf").toExternalForm(), 14);
     var elapsedTime = System.nanoTime() - start;
     double searchingTime = (double) elapsedTime / 1_000_000_000;
-    metaText.setFont(openSans14);
+    metaText.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+        "/view/OpenSans-Regular.ttf")).toExternalForm(), 16));
     metaText.setText(results.size() + " search results (" + searchingTime + " seconds)");
 
   }
 
-  public void showResults(List<Result> res, int page) throws IOException {
+  public void showResults(List<Result> res, int page) {
 
     this.results = res;
 
-    // Show search results
+    // Clear previous search/page results
     resVBox.getChildren().clear();
 
-    Font openSans18 = Font.loadFont(ResultsController.class.getResource(
-        "/view/OpenSans-Regular.ttf").toExternalForm(), 17);
-    Font openSans14 = Font.loadFont(ResultsController.class.getResource(
-        "/view/OpenSans-Regular.ttf").toExternalForm(), 13);
-
-    // Check if there are no results
+    // Check if no results
     if (res.size() == 0) {
       Text notFound = new Text("No results found.");
-      notFound.setFont(openSans14);
+      notFound.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+          "/view/OpenSans-Regular.ttf")).toExternalForm(), 14));
       resVBox.getChildren().add(notFound);
       return;
     }
 
-    int x = 6;
-    if (results.size() - (6 * page) < 6)
-      x = res.size() - page * 6;
-    for (int i = page * 6; i < page * 6 + x; i++) {
+    // Create 7 link/description results for the current page
+    int window = 7;
+    if (results.size() - (7 * page) < 7)
+      window = res.size() - page * 7;
+
+    for (int i = page * 7; i < page * 7 + window; i++) {
 
       Hyperlink link = new Hyperlink(res.get(i).getTitle());
       link.setWrapText(true);
-      link.setFont(openSans18);
+      link.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+          "/view/OpenSans-Regular.ttf")).toExternalForm(), 18));
       openArticle(link);
-
-      Text desc = new Text(res.get(i).getHighlight());
-      desc.setWrappingWidth(600);
-      desc.setFont(openSans14);
-
-      WebView webView = new WebView();
-      WebEngine webEngine = webView.getEngine();
-      webEngine.loadContent(
-          "<body style=\"background-color:rgb(245,245,245)\">"
-          + res.get(i).getHighlight() + "</body>");
       resVBox.getChildren().add(link);
-      resVBox.setPadding(new Insets(0, 0, 0, 0));
-      resVBox.getChildren().add(webView);
+
+      // Use bold font for the query
+      String highlight = res.get(i).getHighlight();
+      Text p1 = new Text(highlight.substring(0, highlight.indexOf("<B>")));
+      p1.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+          "/view/OpenSans-Regular.ttf")).toExternalForm(), 14));
+      Text p2 = new Text(highlight.substring(highlight.indexOf("<B>") + 3, highlight.indexOf("</B>")));
+      p2.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+          "/view/OpenSans-Bold.ttf")).toExternalForm(), 14));
+      Text p3 = new Text(highlight.substring(highlight.indexOf("</B>") + 4));
+      p3.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+          "/view/OpenSans-Regular.ttf")).toExternalForm(), 14));
+
+      TextFlow flow = new TextFlow();
+      flow.getChildren().addAll(p1, p2, p3);
+
+      resVBox.getChildren().add(flow);
     }
 
     // Adjust buttons
-    if (res.size() < 6)
-      btnNext.setVisible(false);
-    else
-      btnNext.setVisible(true);
+    btnNext.setVisible(res.size() >= 7);
+    if (page == 0)
+      btnPrev.setVisible(false);
   }
 
   public void updateHistory(String query) {
@@ -226,5 +208,15 @@ public class ResultsController {
     });
   }
 
+  private void searchSuggestion(Hyperlink link) {
+    link.setOnAction(e -> {
+      String txt = link.getText();
+      try {
+        search(txt);
+      } catch (IOException | ParseException | InvalidTokenOffsetsException ioException) {
+        ioException.printStackTrace();
+      }
+    });
+  }
 
 }

@@ -8,22 +8,15 @@ import javafx.stage.Stage;
 import model.Indexer;
 import model.Constants;
 import model.Searcher;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.spell.LuceneDictionary;
-import org.apache.lucene.search.spell.SpellChecker;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
-
-import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Main extends Application {
 
     private static Main instance;
-    private Searcher searcher;
-    private Indexer indexer;
+    private final Searcher searcher;
+    private final Indexer indexer;
 
     public Main() throws IOException {
 
@@ -36,7 +29,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("landing-page.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("landing-page.fxml")));
         stage.setTitle(Constants.APP_NAME);
         stage.setScene(new Scene(root, 800, 600));
         stage.show();

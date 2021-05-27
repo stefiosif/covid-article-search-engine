@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Result;
 
+import java.util.Objects;
+
 public class ArticleViewer {
 
 
@@ -19,12 +21,12 @@ public class ArticleViewer {
     ScrollPane pane = new ScrollPane();
     VBox vbox = new VBox();
 
-    Font font18 = Font.loadFont(ResultsController.class.getResource(
-        "/view/OpenSans-Regular.ttf").toExternalForm(), 18);
-    Font font14 = Font.loadFont(ResultsController.class.getResource(
-        "/view/Poppins-Light.ttf").toExternalForm(), 14);
-    Font font12 = Font.loadFont(ResultsController.class.getResource(
-        "/view/Poppins-Light.ttf").toExternalForm(), 12);
+    Font font18 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+        "/view/OpenSans-Regular.ttf")).toExternalForm(), 18);
+    Font font14 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+        "/view/Poppins-Light.ttf")).toExternalForm(), 14);
+    Font font12 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+        "/view/Poppins-Light.ttf")).toExternalForm(), 12);
 
     Text title = new Text(r.getTitle());
     title.setFont(font18);

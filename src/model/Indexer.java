@@ -2,13 +2,10 @@ package model;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.*;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.spell.Dictionary;
 import org.apache.lucene.search.spell.LuceneDictionary;
@@ -31,7 +28,7 @@ public class Indexer {
     return spellChecker;
   }
 
-  public Indexer(String indexDir, String dataDir) throws IOException {
+  public Indexer(String indexDir, String dataDir) {
 
     this.indexDir = indexDir;
     this.dataDir = dataDir;
@@ -40,15 +37,15 @@ public class Indexer {
 
   public void index() throws IOException {
 
-    System.out.println(1);
     Directory index = FSDirectory.open(new File(indexDir).toPath());
     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
     IndexWriter iw = new IndexWriter(index, iwc);
 
-    // Delete previous launch index
+    // Delete previous launch's temp index
     iw.deleteAll();
 
     File[] files = new File(dataDir).listFiles();
+    assert files != null;
     for (File file : files)
       iw.addDocument(createDoc(file));
 
@@ -75,8 +72,8 @@ public class Indexer {
 
     String x = br.readLine();
     x = x.replace("-","");
-    doc.add(new TextField(Constants.ARTICLE_DATE,
-        x, Field.Store.NO));
+    doc.add(new IntPoint(Constants.ARTICLE_DATE,
+        Integer.parseInt(x)));
     doc.add(new TextField(Constants.ARTICLE_FOCUS,
         br.readLine(), Field.Store.YES));
     doc.add(new TextField(Constants.ARTICLE_TITLE,

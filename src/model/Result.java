@@ -2,16 +2,17 @@ package model;
 
 public class Result {
 
-  private final String title, author, date, focus, contents;
-  private String highlight;
+  private final String title, author, date, focus, contents, highlight;
 
-  public Result(String title, String author, String date, String focus, String contents){
+  public Result(String title, String author, String date,
+                String focus, String contents, String highlight){
 
     this.title = title;
     this.author = author;
     this.date = date;
     this.focus = focus;
     this.contents = contents;
+    this.highlight = highlight;
   }
 
   public String getTitle() {
@@ -32,10 +33,6 @@ public class Result {
 
   public String getContents() {
     return contents;
-  }
-
-  public void createHighlight(String s) {
-    this.highlight = s;
   }
 
   public String getHighlight() {
