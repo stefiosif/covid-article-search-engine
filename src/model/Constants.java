@@ -18,4 +18,5 @@ public final class Constants {
     public static final String ARTICLE_FOCUS = "focus";
     public static final String ARTICLE_TITLE = "title";
     public static final String ARTICLE_CONTENTS = "contents";
+    public static final String SORTBY_DATE = "sortbydate";
 }

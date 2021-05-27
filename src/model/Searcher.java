@@ -27,14 +27,13 @@ public class Searcher {
   public List<Result> search(String searchQuery, NextQuery nextQuery) throws IOException, ParseException, InvalidTokenOffsetsException {
 
     QueryParser parser = new QueryParser(Constants.ARTICLE_CONTENTS, new StandardAnalyzer());
-
     Query query = parser.parse(searchQuery);
-
     TopDocs topDocs;
+
     if (nextQuery.getSortBy().equals("relevance"))
       topDocs = searcher.search(query, 48, Sort.RELEVANCE);
     else {
-      topDocs = searcher.search(query, 48, new Sort(new SortField(Constants.ARTICLE_DATE, SortField.Type.INT)));
+      topDocs = searcher.search(query, 48, new Sort(new SortedNumericSortField(Constants.SORTBY_DATE, SortField.Type.LONG, true)));
     }
 
     SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
@@ -61,10 +60,8 @@ public class Searcher {
   private String createHighlight(Highlighter highlighter, String text)
       throws IOException, InvalidTokenOffsetsException {
 
-
     String[] highlight = highlighter.getBestFragments(
         new StandardAnalyzer(), Constants.ARTICLE_CONTENTS, text, 1);
-
 
     // Create output string
     StringBuilder out = new StringBuilder();
@@ -74,6 +71,5 @@ public class Searcher {
     }
     return out.toString();
   }
-
 
 }

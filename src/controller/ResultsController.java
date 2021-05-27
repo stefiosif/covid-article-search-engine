@@ -16,9 +16,7 @@ import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import view.ArticleViewer;
 import view.Main;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ResultsController {
 
@@ -42,21 +40,19 @@ public class ResultsController {
 
   private int pageId = 0;
   private List<Result> results;
-  private LinkedList<String> history;
   private NextQuery nextQuery;
+  private  WordCompletion wc;
 
   public void initialize() {
 
+    wc = new WordCompletion(searchInput);
     // Create Advanced search options
     ObservableList<String> sortOptions = FXCollections.observableArrayList(
-        "relevance", "date");
+        "Relevance", "Date");
     sortBox.setItems(sortOptions);
     ObservableList<String> focusOptions = FXCollections.observableArrayList(
-        "business", "general", "tech", "consumer", "science", "finance");
+        "Business", "General", "Tech", "Consumer", "Science", "Finance");
     focusBox.setItems(focusOptions);
-
-    // Store history of queries to use in further searches
-    history = new LinkedList<>();
 
     // Create nextQuery
     nextQuery = new NextQuery();
@@ -105,13 +101,20 @@ public class ResultsController {
 
   public void search(String query) throws IOException, ParseException, InvalidTokenOffsetsException {
 
+    searchInput.setText(query);
 
     long start = System.nanoTime();
 
     List<Result> results
         = Main.getInstance().getSearcher().search(query, nextQuery);
 
-    updateHistory(query);
+    var elapsedTime = System.nanoTime() - start;
+    double searchingTime = (double) elapsedTime / 1_000_000_000;
+    metaText.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
+        "/view/OpenSans-Regular.ttf")).toExternalForm(), 16));
+    metaText.setText(results.size() + " search results (" + searchingTime + " seconds)");
+
+    wc.updateHistory(query);
     showResults(results, 0);
 
     // Set suggestions
@@ -120,17 +123,10 @@ public class ResultsController {
     for (var s : suggestions) {
       Hyperlink link = new Hyperlink(s);
       link.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-          "/view/OpenSans-Regular.ttf")).toExternalForm(), 12));
+          "/view/OpenSans-Regular.ttf")).toExternalForm(), 13));
       searchSuggestion(link);
       suggestHBox.getChildren().add(link);
     }
-
-    var elapsedTime = System.nanoTime() - start;
-    double searchingTime = (double) elapsedTime / 1_000_000_000;
-    metaText.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-        "/view/OpenSans-Regular.ttf")).toExternalForm(), 16));
-    metaText.setText(results.size() + " search results (" + searchingTime + " seconds)");
-
   }
 
   public void showResults(List<Result> res, int page) {
@@ -163,8 +159,8 @@ public class ResultsController {
       openArticle(link);
       resVBox.getChildren().add(link);
 
-      // Use bold font for the query
-      String highlight = res.get(i).getHighlight();
+      String highlight = res.get(i).getDate() + " |" + res.get(i).getHighlight();
+
       Text p1 = new Text(highlight.substring(0, highlight.indexOf("<B>")));
       p1.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
           "/view/OpenSans-Regular.ttf")).toExternalForm(), 14));
@@ -185,14 +181,6 @@ public class ResultsController {
     btnNext.setVisible(res.size() >= 7);
     if (page == 0)
       btnPrev.setVisible(false);
-  }
-
-  public void updateHistory(String query) {
-
-    if (history.contains(query))
-      return;
-
-    history.addFirst(query);
   }
 
   private void openArticle(Hyperlink link) {

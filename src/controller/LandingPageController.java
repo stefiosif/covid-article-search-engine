@@ -28,7 +28,6 @@ public class LandingPageController {
         stage.setScene(new Scene(loader.load()));
 
         ResultsController controller = loader.getController();
-        controller.updateHistory(query);
         controller.search(query);
 
         stage.show();

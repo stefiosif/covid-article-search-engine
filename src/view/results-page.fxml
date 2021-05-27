@@ -30,7 +30,7 @@
    <top>
       <AnchorPane prefHeight="100.0" prefWidth="800.0" style="-fx-border-color: #aeb6c6; -fx-background-color: #dee1e8; -fx-border-width: 0 0 1 0;" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="searchInput" layoutX="217.0" layoutY="22.0" prefHeight="30.0" prefWidth="318.0" promptText="Keep on searching">
+            <TextField fx:id="searchInput" layoutX="217.0" layoutY="22.0" prefHeight="30.0" prefWidth="300.0" promptText="Keep on searching">
                <font>
                   <Font name="Candara Light" size="16.0" />
                </font>
@@ -40,7 +40,7 @@
                   <Font name="Candara" size="40.0" />
                </font>
             </Text>
-            <Button layoutX="533.0" layoutY="22.0" mnemonicParsing="false" onAction="#searchAdvanced" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #375aab;" text="Search" textAlignment="CENTER" textFill="#ebe5e5">
+            <Button layoutX="517.0" layoutY="22.0" mnemonicParsing="false" onAction="#searchAdvanced" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #375aab;" text="Search" textAlignment="CENTER" textFill="#ebe5e5">
                <font>
                   <Font name="Candara Light" size="14.0" />
                </font>
@@ -50,8 +50,8 @@
                   <Font name="Candara Light" size="10.0" />
                </font>
             </Text>
-            <ComboBox fx:id="sortBox" layoutX="593.0" layoutY="22.0" onAction="#sortBy" prefHeight="30.0" prefWidth="85.0" promptText="Sort by" />
-            <ComboBox fx:id="focusBox" layoutX="678.0" layoutY="22.0" onAction="#chooseFocus" prefHeight="30.0" prefWidth="97.0" promptText="Advanced" />
+            <ComboBox fx:id="sortBox" layoutX="577.0" layoutY="22.0" onAction="#sortBy" prefHeight="30.0" prefWidth="100.0" promptText="Sort by" />
+            <ComboBox fx:id="focusBox" layoutX="677.0" layoutY="22.0" onAction="#chooseFocus" prefHeight="30.0" prefWidth="100.0" promptText="Advanced" />
             <HBox fx:id="suggestHBox" layoutX="216.0" layoutY="50.0" prefHeight="40.0" prefWidth="318.0" />
          </children>
       </AnchorPane>

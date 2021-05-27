@@ -23,7 +23,6 @@ public class Main extends Application {
         indexer = new Indexer(Constants.INDEX_PATH, Constants.ARTICLES_PATH);
         indexer.index();
         searcher = new Searcher(Constants.INDEX_PATH);
-
     }
 
     @Override

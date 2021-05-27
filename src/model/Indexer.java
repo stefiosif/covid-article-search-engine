@@ -70,10 +70,11 @@ public class Indexer {
     doc.add(new TextField(Constants.ARTICLE_AUTHOR,
         br.readLine(), Field.Store.YES));
 
-    String x = br.readLine();
-    x = x.replace("-","");
-    doc.add(new IntPoint(Constants.ARTICLE_DATE,
-        Integer.parseInt(x)));
+    String date = br.readLine();
+    long sortByDate = Long.parseLong(date.replace("-",""));
+    doc.add(new SortedNumericDocValuesField(Constants.SORTBY_DATE, sortByDate));
+    doc.add(new TextField(Constants.ARTICLE_DATE,
+            date, Field.Store.YES));
     doc.add(new TextField(Constants.ARTICLE_FOCUS,
         br.readLine(), Field.Store.YES));
     doc.add(new TextField(Constants.ARTICLE_TITLE,
