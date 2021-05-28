@@ -18,9 +18,6 @@ public class ArticleViewer {
 
   public ArticleViewer(Result r) {
 
-    ScrollPane pane = new ScrollPane();
-    VBox vbox = new VBox();
-
     Font font18 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
         "/view/OpenSans-Regular.ttf")).toExternalForm(), 20);
     Font font14 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
@@ -31,7 +28,7 @@ public class ArticleViewer {
     Text title = new Text(r.getTitle());
     title.setFont(font18);
     title.setUnderline(true);
-    title.setWrappingWidth(780);
+    title.setWrappingWidth(765);
 
     Text focus = new Text(r.getFocus());
     focus.setFont(font14);
@@ -41,9 +38,10 @@ public class ArticleViewer {
 
     Text contents = new Text(r.getContents());
     contents.setFont(font12);
-    contents.setWrappingWidth(780);
+    contents.setWrappingWidth(765);
 
     // Add information in vbox
+    VBox vbox = new VBox();
     vbox.getChildren().add(title);
     vbox.getChildren().add(new Text("\n"));
     vbox.getChildren().add(focus);
@@ -51,6 +49,7 @@ public class ArticleViewer {
     vbox.getChildren().add(contents);
 
     // Pane settings
+    ScrollPane pane = new ScrollPane();
     pane.setPadding(new Insets(10));
     pane.setContent(vbox);
 

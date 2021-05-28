@@ -66,6 +66,7 @@ public class Searcher {
       if ((s != null))
         out.append(s);
     }
+
     return out.toString();
   }
 
