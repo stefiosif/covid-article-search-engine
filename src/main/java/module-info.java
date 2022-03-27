@@ -1,9 +1,10 @@
 module com {
-    requires javafx.baseEmpty;
     requires javafx.fxml;
     requires javafx.controls;
     requires javafx.graphics;
     requires javafx.web;
+    requires javafx.base;
+
     requires org.controlsfx.controls;
 
     requires lucene.core;
@@ -12,8 +13,11 @@ module com {
     requires lucene.highlighter;
     requires lucene.suggest;
 
-    opens com.view to javafx.fxml;
+    opens com.view;
+    opens com.controller;
+    opens com.model;
+
     exports com.view;
-    exports com.model;
     exports com.controller;
+    exports com.model;
 }

@@ -41,6 +41,7 @@ public class Indexer {
     Directory index = FSDirectory.open(new File(indexDir).toPath());
     IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
     IndexWriter iw = new IndexWriter(index, iwc);
+    iw.commit();
 
     // Delete previous launch's temp index
     iw.deleteAll();

@@ -23,7 +23,7 @@ public class LandingPageController {
         if (query == null || query.equals("")) return;
 
         // Load new stage from fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/results-page.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/results-page.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(loader.load()));
 
