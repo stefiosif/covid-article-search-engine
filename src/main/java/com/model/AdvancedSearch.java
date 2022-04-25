@@ -2,7 +2,8 @@ package com.model;
 
 public class AdvancedSearch {
 
-  private String sort, focus;
+  private String sort;
+  private String focus;
 
   public AdvancedSearch() {
     this.sort = "relevance";

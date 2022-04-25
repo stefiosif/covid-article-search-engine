@@ -10,7 +10,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import com.model.Result;
-
 import java.util.Objects;
 
 public class ArticleViewer {
@@ -19,11 +18,11 @@ public class ArticleViewer {
   public ArticleViewer(Result r) {
 
     Font font18 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-            "/view/OpenSans-Regular.ttf")).toExternalForm(), 20);
+            "/OpenSans-Regular.ttf")).toExternalForm(), 20);
     Font font14 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-            "/view/Poppins-Light.ttf")).toExternalForm(), 15);
+            "/Poppins-Light.ttf")).toExternalForm(), 15);
     Font font12 = Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-            "/view/Poppins-Light.ttf")).toExternalForm(), 13);
+            "/Poppins-Light.ttf")).toExternalForm(), 13);
 
     Text title = new Text(r.getTitle());
     title.setFont(font18);

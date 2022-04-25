@@ -19,6 +19,6 @@ public final class Constants {
     public static final String ARTICLE_TITLE = "title";
     public static final String ARTICLE_CONTENTS = "contents";
     public static final String SORTBY_DATE = "sortbydate";
-    public static final String OS_FONT = "/view/OpenSans-Regular.ttf";
+    public static final String OS_FONT = "/OpenSans-Regular.ttf";
 
 }

@@ -8,6 +8,8 @@ import org.apache.lucene.search.*;
 
 public class QueryBuilder {
 
+  private QueryBuilder(){}
+
   public static Query createQuery(String query, String options) throws ParseException {
 
     Query finalQuery;

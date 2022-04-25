@@ -50,7 +50,7 @@ public class ResultsController {
 
   public void initialize() {
 
-    wc = new WordCompletion(searchInput);
+    //wc = new WordCompletion(searchInput);
 
     // Create Advanced search options
     ObservableList<String> sortOptions = FXCollections.observableArrayList(
@@ -115,11 +115,13 @@ public class ResultsController {
 
     var elapsedTime = System.nanoTime() - start;
     double searchingTime = (double) elapsedTime / 1_000_000_000;
+    System.out.println(ResultsController.class.getResource(
+            Constants.OS_FONT).toExternalForm());
     metaText.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
             Constants.OS_FONT)).toExternalForm(), 16));
     metaText.setText(resultsPool.size() + " search results (" + searchingTime + " seconds)");
 
-    wc.updateHistory(query);
+    //wc.updateHistory(query);
     showResults(resultsPool, 0);
 
     // Set suggestions
@@ -169,13 +171,13 @@ public class ResultsController {
 
       Text p1 = new Text(highlight.substring(0, highlight.indexOf("<B>")));
       p1.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-              "/view/OpenSans-Regular.ttf")).toExternalForm(), 14));
+              "/OpenSans-Regular.ttf")).toExternalForm(), 14));
       Text p2 = new Text(highlight.substring(highlight.indexOf("<B>") + 3, highlight.indexOf("</B>")));
       p2.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-              "/view/OpenSans-Bold.ttf")).toExternalForm(), 14));
+              "/OpenSans-Bold.ttf")).toExternalForm(), 14));
       Text p3 = new Text(highlight.substring(highlight.indexOf("</B>") + 4));
       p3.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
-              "/view/OpenSans-Regular.ttf")).toExternalForm(), 14));
+              "/OpenSans-Regular.ttf")).toExternalForm(), 14));
 
       TextFlow flow = new TextFlow();
       flow.getChildren().addAll(p1, p2, p3);

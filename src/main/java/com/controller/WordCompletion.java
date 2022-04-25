@@ -2,14 +2,14 @@ package com.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
-import org.controlsfx.control.textfield.TextFields;
+/*import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;*/
 import java.util.HashSet;
 import java.util.Set;
 
 public class WordCompletion {
 
-  private final Set<String> history = new HashSet<>();
+  /*private final Set<String> history = new HashSet<>();
   private AutoCompletionBinding<String> autoComplete;
 
   @FXML
@@ -26,6 +26,6 @@ public class WordCompletion {
     if (autoComplete != null)
       autoComplete.dispose();
     autoComplete = TextFields.bindAutoCompletion(searchInput, history);
-  }
+  }*/
 
 }
