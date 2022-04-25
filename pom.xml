@@ -121,15 +121,13 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.6</version>
-                <executions>
-                    <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
-                        <id>default-cli</id>
-                        <configuration>
-                            <mainClass>com/com.view.Main</mainClass>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <mainClass>com.view.Main</mainClass>
+                    <options>
+                        <option>--add-exports</option>
+                        <option>java.base/com.sun.javafx.event=org.controlsfx.controls</option>
+                    </options>
+                </configuration>
             </plugin>
         </plugins>
     </build>

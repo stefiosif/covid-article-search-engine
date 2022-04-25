@@ -50,7 +50,7 @@ public class ResultsController {
 
   public void initialize() {
 
-    //wc = new WordCompletion(searchInput);
+    wc = new WordCompletion(searchInput);
 
     // Create Advanced search options
     ObservableList<String> sortOptions = FXCollections.observableArrayList(
@@ -115,13 +115,12 @@ public class ResultsController {
 
     var elapsedTime = System.nanoTime() - start;
     double searchingTime = (double) elapsedTime / 1_000_000_000;
-    System.out.println(ResultsController.class.getResource(
-            Constants.OS_FONT).toExternalForm());
+
     metaText.setFont(Font.loadFont(Objects.requireNonNull(ResultsController.class.getResource(
             Constants.OS_FONT)).toExternalForm(), 16));
     metaText.setText(resultsPool.size() + " search results (" + searchingTime + " seconds)");
 
-    //wc.updateHistory(query);
+    wc.updateHistory(query);
     showResults(resultsPool, 0);
 
     // Set suggestions
