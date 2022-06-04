@@ -33,26 +33,18 @@
             <artifactId>javafx-base</artifactId>
             <version>17.0.2</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>17.0.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
             <version>17.0.2</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.controlsfx/controlsfx -->
-        <dependency>
-            <groupId>org.controlsfx</groupId>
-            <artifactId>controlsfx</artifactId>
-            <version>11.1.0</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -67,7 +59,6 @@
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
@@ -123,10 +114,6 @@
                 <version>0.0.6</version>
                 <configuration>
                     <mainClass>com.view.Main</mainClass>
-                    <options>
-                        <option>--add-exports</option>
-                        <option>java.base/com.sun.javafx.event=org.controlsfx.controls</option>
-                    </options>
                 </configuration>
             </plugin>
         </plugins>

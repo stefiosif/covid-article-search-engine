@@ -46,11 +46,8 @@ public class ResultsController {
   private int pageId = 0;
   private List<Result> results;
   private AdvancedSearch advancedSearch;
-  private WordCompletion wc;
 
   public void initialize() {
-
-    wc = new WordCompletion(searchInput);
 
     // Create Advanced search options
     ObservableList<String> sortOptions = FXCollections.observableArrayList(
@@ -120,7 +117,6 @@ public class ResultsController {
             Constants.OS_FONT)).toExternalForm(), 16));
     metaText.setText(resultsPool.size() + " search results (" + searchingTime + " seconds)");
 
-    wc.updateHistory(query);
     showResults(resultsPool, 0);
 
     // Set suggestions

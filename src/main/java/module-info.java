@@ -5,8 +5,6 @@ module com {
     requires javafx.web;
     requires javafx.base;
 
-    requires org.controlsfx.controls;
-
     requires lucene.core;
     requires lucene.queryparser;
     requires lucene.queries;
